@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Estrategia Monarca Band</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #1a202c;
+      overflow: hidden;
+    }
+    .carousel {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .slides {
+      display: flex;
+      width: 800%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .slide {
+      min-width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      padding: 50px 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #0066cc;
+    }
+    .title {
+      font-size: 42px;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-size: 22px;
+      font-weight: 500;
+      color: #0066cc;
+      margin-bottom: 24px;
+    }
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: #0066cc;
+      margin: 16px 0 24px 0;
+      border-radius: 2px;
+    }
+    .text-lg { 
+      font-size: 17px; 
+      line-height: 1.6; 
+      color: #4a5568; 
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .spec-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 18px;
+      text-align: center;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    .spec-box:hover {
+      border-color: #0066cc;
+      box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+    }
+    .spec-label {
+      font-size: 11px;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .spec-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0066cc;
+    }
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #0066cc;
+      color: white;
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+      transition: all 0.3s ease;
+    }
+    .nav-btn:hover { 
+      background: #0052a3;
+      transform: translateY(-50%) scale(1.05);
+    }
+    .prev { left: 30px; }
+    .next { right: 30px; }
+    .dots {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 40px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #cbd5e0;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .dot.active { 
+      background: #0066cc;
+      width: 32px; 
+      border-radius: 4px;
+    }
+    .warning {
+      background: #fffbeb;
+      border: 1px solid #fbbf24;
+      border-left: 4px solid #f59e0b;
+      padding: 16px 18px;
+      margin-top: 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #92400e;
+      line-height: 1.6;
+    }
+    .warning strong { 
+      color: #92400e; 
+      font-weight: 700;
+    }
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 15px;
+      margin-top: 12px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    .table th {
+      background: #f1f5f9;
+      color: #334155;
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      background: white;
+      font-size: 15px;
+    }
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+    .value-green { color: #16a34a; font-weight: 600; }
+    .value-red { color: #dc2626; font-weight: 600; }
+    .img-container {
+      max-width: 480px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .img-container img {
+      width: 100%;
+      height: auto;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .img-label {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .flex-row {
+      display: flex;
+      gap: 40px;
+      flex: 1;
+      margin-top: 20px;
+    }
+    .flex-row .img-container {
+      flex: 0 0 480px;
+      max-width: 480px;
+      margin: 0;
+    }
+    .flex-row .content {
+      flex: 1;
+    }
+    .two-tables {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .two-tables > div {
+      flex: 1;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+    .blue-box {
+      background: #eff6ff;
+      padding: 18px;
+      border-left: 4px solid #0066cc;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .gray-box {
+      background: #f8fafc;
+      padding: 18px;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 15px;
+      border: 1px solid #e2e8f0;
+      line-height: 1.7;
+    }
+    .text-center { text-align: center; }
+    .big-time {
+      font-size: 64px;
+      font-weight: 800;
+      color: #0066cc;
+      margin: 16px 0;
+      letter-spacing: -1px;
+    }
+    .small-box {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 15px;
+      line-height: 1.7;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .small-box:hover {
+      border-color: #0066cc;
+      box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+    }
+    .small-box p:first-child {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1a202c;
+      font-size: 16px;
+    }
+    .step-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .step-card-large {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+    .step-card-large:hover {
+      border-color: #0066cc;
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.08);
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .step-number {
+      background: #0066cc;
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1a202c;
+    }
+    .step-main {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a202c;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .step-desc {
+      font-size: 15px;
+      color: #4a5568;
+      line-height: 1.7;
+      flex: 1;
+    }
+    .step-card {
+      background: #f8fafc;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border: 1px solid #e2e8f0;
+      font-size: 15px;
+      line-height: 1.7;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .step-card:hover {
+      border-color: #0066cc;
+      transform: translateX(3px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="carousel">
+  <div class="slides" id="slides">
+<!-- DIAPOSITIVA 1: PORTADA MÁS GRANDE Y CENTRADA (100% COMO TU CAPTURA) -->
+<div class="slide">
+  <div style="text-align: center; max-width: 1100px; margin: 0 auto; padding-top: 120px;">
+    
+    <!-- TÍTULO MÁS GRANDE -->
+    <h1 style="font-size: 88px; font-weight: 900; color: #1a1a1a; margin-bottom: 24px; line-height: 1.1;">Estrategia Monarca Band</h1>
+    
+    <!-- SUBTÍTULO AZUL -->
+    <p style="font-size: 36px; font-weight: 600; color: #0066cc; margin-bottom: 32px;">Sistema de Trading Estructurado</p>
+    
+    <!-- LÍNEA AZUL CENTRADA -->
+    <div style="width: 80px; height: 4px; background: #0066cc; margin: 0 auto 40px;"></div>
+    
+    <!-- 3 LÍNEAS DE TEXTO -->
+    <p style="font-size: 22px; color: #444; margin-bottom: 12px;">Guía Completa para Grupos de Estudio</p>
+    <p style="font-size: 22px; color: #444; margin-bottom: 12px;">Análisis Profundo del Indicador Monarca Band</p>
+    <p style="font-size: 22px; color: #444; margin-bottom: 60px;">Gestión de Riesgo Automatizada</p>
+
+    <!-- 4 CAJAS CENTRADAS EN FILA -->
+    <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;">
+      <div style="background: #f8f9fc; border: 1px solid #e2e8f0; padding: 20px 32px; border-radius: 12px; text-align: center; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+        <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px;">MERCADO</div>
+        <div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">NASDAQ</div>
+      </div>
+      <div style="background: #f8f9fc; border: 1px solid #e2e8f0; padding: 20px 32px; border-radius: 12px; text-align: center; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+        <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px;">POSICIÓN</div>
+        <div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">4 Micros</div>
+      </div>
+      <div style="background: #f8f9fc; border: 1px solid #e2e8f0; padding: 20px 32px; border-radius: 12px; text-align: center; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+        <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px;">HORARIO</div>
+        <div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">15:00-17:00</div>
+      </div>
+      <div style="background: #f8f9fc; border: 1px solid #e2e8f0; padding: 20px 32px; border-radius: 12px; text-align: center; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+        <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px;">INDICADOR</div>
+        <div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">SMA 12</div>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- DIAPOSITIVA 2: Contexto y Mercado -->
+    <div class="slide">
+      <h2 class="title">Contexto y Mercado</h2>
+      <div class="divider"></div>
+      <div class="flex-row">
+        <div class="content">
+          <div class="gray-box">
+            <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">MERCADO E INSTRUMENTO</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; font-weight: 600;">MERCADO</p>
+                <p style="font-size: 17px; font-weight: 700; color: #1a202c;">NASDAQ</p>
+                <p style="font-size: 14px; color: #4a5568; margin-top: 5px; line-height: 1.5;">Índice tecnológico con alta liquidez y volatilidad controlada</p>
+              </div>
+              <div>
+                <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; font-weight: 600;">CONTRATOS</p>
+                <p style="font-size: 17px; font-weight: 700; color: #1a202c;">4 Micros</p>
+                <p style="font-size: 14px; color: #4a5568; margin-top: 5px; line-height: 1.5;">Tamaño de posición optimizado para gestión de riesgo</p>
+              </div>
+            </div>
+          </div>
+          <div class="gray-box">
+            <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">HORARIO DE OPERACIÓN</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; font-weight: 600;">PLAYBACK</p>
+                <p style="font-size: 17px; font-weight: 700; color: #1a202c;">15:00 - 17:00</p>
+                <p style="font-size: 14px; color: #4a5568; margin-top: 5px; line-height: 1.5;">Ventana de operación exclusiva para máxima consistencia</p>
+              </div>
+              <div>
+                <p style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; font-weight: 600;">FUERA DE HORARIO</p>
+                <p style="font-size: 17px; font-weight: 700; color: #1a202c;">Sin Operaciones</p>
+                <p style="font-size: 14px; color: #4a5568; margin-top: 5px; line-height: 1.5;">Todas las órdenes se cancelan automáticamente</p>
+              </div>
+            </div>
+          </div>
+          <div class="gray-box">
+            <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">PARÁMETROS TÉCNICOS</p>
+            <table class="table">
+              <tr><th>Parámetro</th><th>Valor</th></tr>
+              <tr><td>Tipo de Promedio</td><td><strong>SMA 12</strong></td></tr>
+              <tr><td>Flechas (DrawArrows)</td><td><strong>10</strong></td></tr>
+              <tr><td>DottedLinePipsRange</td><td><strong>2000</strong></td></tr>
+              <tr><td>Rango</td><td><strong>100</strong></td></tr>
+              <tr><td>SoundFile</td><td><strong>Sonido cambio tendencia</strong></td></tr>
+              <tr><td>SoundFileBand</td><td><strong>Sonido cuando una vela entra en la banda</strong></td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="img-container">
+          <img src="indicador.png" alt="Configuración del Indicador">
+          <p class="img-label">Configuración del Indicador</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIAPOSITIVA 3: El Indicador Monarca Band -->
+    <div class="slide">
+      <h2 class="title">El Indicador Monarca Band</h2>
+      <div class="divider"></div>
+      <div class="flex-row">
+        <div class="img-container">
+          <img src="indicador3.png" alt="Indicador Monarca Band">
+          <p class="img-label">Lugar → Confirmación → Disparo</p>
+        </div>
+        <div class="content">
+          <div class="blue-box">
+            <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 14px;">CONCEPTO CLAVE</p>
+            <p>Buscamos la <strong>línea punteada</strong> de la tendencia anterior (contraria a nuestro movimiento). Esta línea es nuestra referencia de soporte y resistencia.</p>
+          </div>
+          <p style="font-weight: 600; color: #0066cc; margin: 16px 0 12px; text-transform: uppercase; letter-spacing: 1px; font-size: 13px;">LOS 4 PASOS</p>
+          <div class="step-card">
+            <span style="background: #0066cc;color:white;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;margin-right:10px;font-weight:700;">1</span> 
+            <span><strong>LUGAR:</strong> Línea punteada (referencia)</span>
+          </div>
+          <div class="step-card">
+            <span style="background: #0066cc;color:white;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;margin-right:10px;font-weight:700;">2</span> 
+            <span><strong>AVISO:</strong> Dos velas tocan la línea esto puede suceder antes o después del paso 3</span>
+          </div>
+          <div class="step-card">
+            <span style="background: #0066cc;color:white;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;margin-right:10px;font-weight:700;">3</span> 
+            <span><strong>CONFIRMACIÓN:</strong> Flecha de cambio (OBLIGATORIA)</span>
+          </div>
+          <div class="step-card">
+            <span style="background: #0066cc;color:white;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;margin-right:10px;font-weight:700;">4</span> 
+            <span><strong>DISPARO:</strong> Siguiente vela toca la línea, mínimo siempre ha de ser tercera vela o posterior</span>
+          </div>
+          <div class="gray-box">
+            <p style="font-size: 14px;"><strong>PARÁMETROS TÉCNICOS</strong><br>SMA 12 | DrawArrows: 10<br>DottedLinePipsRange: 2000 | Rango: 100</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- DIAPOSITIVA 4: Los 4 Pasos + Reglas (FOTO ARRIBA + 4 COLUMNAS NUMERADAS + RESTO DEBAJO) -->
+<div class="slide">
+  <h2 class="title" style="margin-bottom: 20px;">Los 4 Pasos de Entrada y Reglas Específicas</h2>
+  <div class="divider"></div>
+
+  <!-- FOTO ARRIBA + 4 COLUMNAS NUMERADAS AL LADO -->
+  <div style="display: flex; align-items: flex-start; gap: 40px; margin: 24px 0 32px;">
+    
+    <!-- FOTO A LA IZQUIERDA -->
+    <div style="flex: 0 0 380px; text-align: center;">
+      <img src="indicador4.png" alt="Ejemplo Visual de Entrada" style="width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+      <p style="font-size: 14px; color: #0066cc; margin-top: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Ejemplo Visual de Entrada</p>
+    </div>
+
+    <!-- 4 COLUMNAS NUMERADAS AL LADO -->
+    <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div class="step-card-large" style="padding: 16px; position: relative;">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0066cc; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">1</div>
+        <div class="step-title" style="margin-top: 12px; font-size: 16px; font-weight: 700;">AVISO</div>
+        <div class="step-main" style="font-size: 15px; margin: 8px 0;">Dos velas tocan la línea punteada</div>
+        <div class="step-desc" style="font-size: 13.5px; color: #555;">Línea de la flecha opuesta. <strong>Pre-requisito obligatorio</strong>.</div>
+      </div>
+
+      <div class="step-card-large" style="padding: 16px; position: relative;">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0066cc; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">2</div>
+        <div class="step-title" style="margin-top: 12px; font-size: 16px; font-weight: 700;">CONFIRMACIÓN</div>
+        <div class="step-main" style="font-size: 15px; margin: 8px 0;">Flecha de cambio</div>
+        <div class="step-desc" style="font-size: 13.5px; color: #555;"><strong>OBLIGATORIA</strong>: Azul (compra), Roja (venta).</div>
+      </div>
+
+      <div class="step-card-large" style="padding: 16px; position: relative;">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0066cc; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">3</div>
+        <div class="step-title" style="margin-top: 12px; font-size: 16px; font-weight: 700;">DISPARO</div>
+        <div class="step-main" style="font-size: 15px; margin: 8px 0;">3ª vela o siguiente tras flecha</div>
+        <div class="step-desc" style="font-size: 13.5px; color: #555;">Independiente de dirección. Toca la línea.</div>
+      </div>
+
+      <div class="step-card-large" style="padding: 16px; position: relative;">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0066cc; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">4</div>
+        <div class="step-title" style="margin-top: 12px; font-size: 16px; font-weight: 700;">EJECUCIÓN</div>
+        <div class="step-main" style="font-size: 15px; margin: 8px 0;">Orden LIMIT en el punto</div>
+        <div class="step-desc" style="font-size: 13.5px; color: #555;">A favor de la nueva tendencia. <strong>Precisión crítica</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESTO DEBAJO: REGLAS + WARNING -->
+  <div style="margin-top: 20px;">
+    <div class="blue-box" style="padding: 16px; border-left: 4px solid #0066cc; margin-bottom: 16px;">
+      <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">REGLAS ESPECÍFICAS</p>
+      <ul style="font-size: 14.5px; line-height: 1.7; margin: 0; padding-left: 20px; color: #1a202c;">
+        <li>La <strong>flecha</strong> es el disparador final. Sin ella, no hay entrada.</li>
+        <li>Las <strong>2 velas</strong> tocan la línea <strong>antes o después</strong> de la flecha.</li>
+        <li><strong>3ª vela o siguiente</strong> tras confirmación de tendencia.</li>
+        <li>Entrada <strong>LIMIT</strong> en el toque exacto.</li>
+        <li>Solo <strong>15:00-17:00</strong>. Fuera: <strong>NO se entra</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="warning" style="font-size: 14px; padding: 12px; border-left: 4px solid #fa8c16;">
+      <strong>IMPORTANTE</strong>: Flecha + mínimo 3 velas es <strong>OBLIGATORIO</strong>. Sin esto, no hay entrada válida.
+    </div>
+  </div>
+</div>
+
+<!-- DIAPOSITIVA 5: Gestión de Riesgo (ATM 1 y ATM 2) - CORREGIDA CON IMÁGENES Y ENCUADRE PERFECTO -->
+<div class="slide">
+  <h2 class="title">Gestión de Riesgo (ATM 1 y ATM 2)</h2>
+  <div class="divider"></div>
+  <p style="font-size: 18px; margin-bottom: 24px; color: #4a5568; line-height: 1.6;">Existen dos estrategias de gestión de riesgo: ATM 1 (simple, sin cobertura) y ATM 2 (con cobertura en dos pasos).</p>
+  
+  <!-- IMÁGENES DE LAS TABLAS ATM (ENCUADRE PERFECTO) -->
+  <div class="two-tables" style="gap: 40px; margin-bottom: 28px;">
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+      <div style="width: 100%; max-width: 420px; background: #ffffff; padding: 8px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+        <img src="ATM.png" alt="ATM 1: Sin Cobertura" style="width: 100%; height: auto; display: block; border-radius: 8px;">
+      </div>
+      <p style="margin-top: 12px; font-size: 14px; color: #0066cc; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">ATM 1: SIN COBERTURA</p>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+      <div style="width: 100%; max-width: 420px; background: #ffffff; padding: 8px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+        <img src="Cubierta.jpg" alt="ATM 2: Con Cobertura" style="width: 100%; height: auto; display: block; border-radius: 8px;">
+      </div>
+      <p style="margin-top: 12px; font-size: 14px; color: #0066cc; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">ATM 2: CON COBERTURA</p>
+    </div>
+  </div>
+
+  <!-- TABLAS DETALLADAS EN TEXTO (OPCIONAL, SI QUIERES MANTENERLAS) -->
+  <div class="two-tables" style="gap: 30px; margin-top: 20px;">
+    <div>
+      <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; border-bottom: 2px solid #0066cc; padding-bottom: 6px; font-size: 15px;">ATM 1: Sin Cobertura</p>
+      <p style="font-weight: 600; color: #1a202c; margin: 14px 0 10px; font-size: 14px;">ESTRATEGIA SIMPLE</p>
+      <table class="table">
+        <tr><th>PARÁMETRO</th><th>VALOR</th></tr>
+        <tr><td>Stop Loss</td><td class="value-red">100 ticks</td></tr>
+        <tr><td>Objetivo de Ganancias</td><td class="value-green">180 ticks</td></tr>
+        <tr><td>Cierre</td><td><strong>Todo a la vez</strong></td></tr>
+      </table>
+      <p style="font-size: 14px; margin-top: 10px; color: #4a5568; line-height: 1.6;">Estrategia directa: se abre con Stop Loss de 100 ticks y se cierra completamente al alcanzar 180 ticks de ganancia.</p>
+    </div>
+    <div>
+      <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; border-bottom: 2px solid #0066cc; padding-bottom: 6px; font-size: 15px;">ATM 2: Con Cobertura</p>
+      <p style="font-weight: 600; color: #1a202c; margin: 14px 0 10px; font-size: 14px;">ESTRATEGIA EN DOS PASOS</p>
+      <table class="table">
+        <tr><th>PASO</th><th>SL / ACTIVADOR</th><th>FREQ</th></tr>
+        <tr><td>Paso 1</td><td><span class="value-red">100</span> / <span class="value-green">108</span></td><td>10</td></tr>
+        <tr><td>Paso 2</td><td><span class="value-red">40</span> / <span class="value-green">160</span></td><td>2</td></tr>
+      </table>
+      <p style="font-size: 14px; margin-top: 10px; color: #4a5568; line-height: 1.6;">Paso 1: Cubierta a 8 ticks cuando llega a 108 ticks, persiguiendo el precio en 100ticks siguiendo la cubierta cada 10 ticks que avanza
+         <br>Paso 2: Ahogamos el profit cuando llega a 160 ticks, poniendo tan solo 40 ticks de distancia, subiendo este stop cada 2 ticks que avanza el precio a nuestro objetivo 180 ticks</p>
+    </div>
+  </div>
+
+  <!-- COMPARACIÓN FINAL -->
+  <div class="gray-box" style="margin-top: 28px;">
+    <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 14px;">Comparación y Uso</p>
+    <p style="margin-bottom: 6px;"><strong>ATM 1:</strong> Uso simple, menor complejidad, cierre único. Ideal para operaciones directas.</p>
+    <p><strong>ATM 2:</strong> Estrategia de cobertura, Una vez el precio sube poco más de una vela cubrimos para evitar perdidas en el Paso 1, buscamos  objetivo de ganancia en  el Paso 2. Control de riesgo.</p>
+  </div>
+</div>
+    
+    <!-- DIAPOSITIVA 6: Horario -->
+    <div class="slide">
+      <h2 class="title">Horario de Operación</h2>
+      <div class="divider"></div>
+      <div class="text-center">
+        <div style="background: #eff6ff; padding: 28px; border-radius: 12px; display: inline-block; margin: 20px 0; border: 2px solid #0066cc;">
+          <p style="font-size: 16px; color: #0066cc; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 600;">HORARIO PLAYBACK</p>
+          <p class="big-time">15:00 – 17:00</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px;">
+        <div class="small-box">
+          <p>Volatilidad Estratégica</p>
+          <p style="color: #4a5568; font-weight: 400;">La volatilidad a esa hora hace que las operaciones sean más rápidas y eficientes.</p>
+        </div>
+        <div class="small-box">
+          <p>Eficiencia Temporal</p>
+          <p style="color: #4a5568; font-weight: 400;">No se convierte en tediosa. No hay que esperar horas para ver resultados.</p>
+        </div>
+        <div class="small-box">
+          <p>Libertad Económica y Horaria</p>
+          <p style="color: #4a5568; font-weight: 400;">El objetivo es ganar dinero en poco tiempo dentro de una ventana controlada.</p>
+        </div>
+        <div class="small-box">
+          <p>Velas de Rango 100</p>
+          <p style="color: #4a5568; font-weight: 400;">Se utilizan Velas de 100 rango (Rango 100 del indicador) para máxima consistencia.</p>
+        </div>
+      </div>
+      <div class="gray-box" style="margin-top: 20px;">
+        <p style="font-weight: 600; color: #0066cc; margin-bottom: 10px; font-size: 14px;">Regla de las Velas (Aclaración Importante)</p>
+        <ul style="font-size: 15px; color: #1a202c; margin-left: 20px; line-height: 1.7;">
+          <li style="margin-bottom: 6px;">La regla de las 3 velas es independiente si son antes o durante el horario.</li>
+          <li style="margin-bottom: 6px;">Mínimo la tercera vela debe haber tocado la línea punteada.</li>
+          <li style="margin-bottom: 6px;">Nunca se puede disparar por muchas velas si no se ha confirmado con el cambio de tendencia (la flecha).</li>
+          <li style="margin-bottom: 6px;">Disciplina absoluta: Operaciones solo en horario 15:00-17:00. Fuera de horario, no se realizan entradas.</li>
+        </ul>
+      </div>
+      <div class="warning">
+        <strong>REQUISITO </strong><br>
+        La confirmación (flecha) y que mínimo 3 velas toquen nuestra línea es OBLIGATORIA. Sin esto, no existe entrada válida, independientemente del horario.
+      </div>
+    </div>
+
+    <!-- DIAPOSITIVA 7: Requisitos No Negociables -->
+    <div class="slide">
+      <h2 class="title">Requisitos No Negociables</h2>
+      <div class="divider"></div>
+      <div class="step-grid" style="margin-top: 24px;">
+        <div class="step-card-large">
+          <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title">Dos Velas Antes</div>
+          </div>
+          <div class="step-desc">Deben tocar la línea punteada. Este es un pre-requisito obligatorio antes de cualquier otra acción.</div>
+        </div>
+        <div class="step-card-large">
+          <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title">Flecha de Cambio</div>
+          </div>
+          <div class="step-desc">OBLIGATORIA para validar la entrada. Azul para compra (alcista), Roja para venta (bajista).</div>
+        </div>
+        <div class="step-card-large">
+          <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title">Tercera Vela Toca</div>
+          </div>
+          <div class="step-desc">Independientemente de su dirección, marca el momento exacto de entrada para la orden LIMIT.</div>
+        </div>
+        <div class="step-card-large">
+          <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title">A Favor del Cambio</div>
+          </div>
+          <div class="step-desc">Ejecución en punto exacto a favor de la tendencia confirmada. Precisión es crítica.</div>
+        </div>
+        <div class="step-card-large">
+          <div class="step-header">
+            <div class="step-number">5</div>
+            <div class="step-title">ATM Estructurado</div>
+          </div>
+          <div class="step-desc">ATM 2<br> CUBIERTA <br>Paso 1:Stop 100 /  Activador 100 / Frecuencia 10 <br>Paso 2 : Stop 40 / Activador 160 / Frecuencia 2 .</div>
+        </div>
+        <div class="step-card-large">
+          <div class="step-header">
+            <div class="step-number">6</div>
+            <div class="step-title">Horario Playback</div>
+          </div>
+          <div class="step-desc">15:00-17:00 exclusivamente. Fuera de horario: sin operaciones. Disciplina absoluta.</div>
+        </div>
+      </div>
+      <div class="warning">
+        <p style="margin-bottom: 10px;"><strong>REQUISITOS NO NEGOCIABLES</strong></p>
+        <ul style="margin-left: 20px; font-size: 15px; line-height: 1.7;">
+          <li style="margin-bottom: 6px;">La flecha de cambio es OBLIGATORIA. Sin ella, no existe entrada válida.</li>
+          <li style="margin-bottom: 6px;">Mínimo 3 velas han de tocar nuestra línea y flecha de confirmación.</li>
+          <li style="margin-bottom: 6px;">La tercera vela o siguiente que rompe nuestra zona tras el cambio de tendencia confirmado.</li>
+          <li style="margin-bottom: 6px;">El disparo debe ser en nuestra línea de referencia.</li>
+          <li style="margin-bottom: 6px;">El disparo se realiza con el ATM indicado y a favor de la nueva tendencia.</li>
+          <li>Operaciones solo en horario 15:00-17:00. Disciplina absoluta.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <button class="nav-btn prev" onclick="moveSlide(-1)">‹</button>
+  <button class="nav-btn next" onclick="moveSlide(1)">›</button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.getElementById('slides');
+  const totalSlides = 8;
+  const dotsContainer = document.getElementById('dots');
+
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  }
+  const dots = document.querySelectorAll('.dot');
+
+  function updateDots() {
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === currentSlide);
+    });
+  }
+
+  function moveSlide(direction) {
+    currentSlide += direction;
+    if (currentSlide < 0) currentSlide = totalSlides - 1;
+    if (currentSlide >= totalSlides) currentSlide = 0;
+    slides.style.transform = `translateX(-${currentSlide * 100}vw)`;
+    updateDots();
+  }
+
+  function goToSlide(index) {
+    currentSlide = index;
+    slides.style.transform = `translateX(-${currentSlide * 100}vw)`;
+    updateDots();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') moveSlide(-1);
+    if (e.key === 'ArrowRight') moveSlide(1);
+  });
+</script>
+
+</body>
+</html>
