@@ -405,63 +405,90 @@
       </div>
     </div>
 
-    <!-- 3. Gestión de Riesgo (ATM 1 y ATM 2) -->
-    <div class="slide">
-      <div class="header-left">
-        <img src="Monarca.png" alt="Monarca">
-        <span>Monarca Band</span>
+    <!-- 3. Gestión de Riesgo (ATM 1 y ATM 2) - VERSIÓN FINAL CORREGIDA -->
+<div class="slide">
+  <div class="header-left">
+    <img src="Monarca.png" alt="Monarca">
+    <span>Monarca Band</span>
+  </div>
+  <div class="container">
+    <h2 class="title">Gestión de Riesgo (ATM 1 y ATM 2)</h2>
+    <div class="divider"></div>
+    <p style="font-size:18px;margin-bottom:24px;color:#4a5568;line-height:1.6;">
+      Existen dos estrategias de gestión de riesgo: ATM 1 (con cobertura en dos pasos) y ATM 2 (simple, sin cobertura).
+    </p>
+
+    <!-- IMÁGENES (intercambiadas correctamente) -->
+    <div class="two-tables" style="gap:40px;margin-bottom:28px;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:100%;max-width:420px;background:#fff;padding:8px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e2e8f0;cursor:pointer;transition:all 0.3s;" 
+             onclick="openLightbox('Cubierta.jpg', 'ATM 1: Con Cobertura')">
+          <img src="Cubierta.jpg" alt="ATM 1: Con Cobertura" style="width:100%;height:auto;display:block;border-radius:8px;">
+        </div>
+        <p style="margin-top:12px;font-size:14px;color:#2c5282;font-weight:600;text-transform:uppercase;letter-spacing:1px;">
+          ATM 1: CON COBERTURA
+        </p>
       </div>
-      <div class="container">
-        <h2 class="title">Gestión de Riesgo (ATM 1 y ATM 2)</h2>
-        <div class="divider"></div>
-        <p style="font-size:18px;margin-bottom:24px;color:#4a5568;line-height:1.6;">Existen dos estrategias de gestión de riesgo: ATM 1 (simple, sin cobertura) y ATM 2 (con cobertura en dos pasos).</p>
 
-        <div class="two-tables" style="gap:40px;margin-bottom:28px;">
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-            <div style="width:100%;max-width:420px;background:#fff;padding:8px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e2e8f0;cursor:pointer;transition:all 0.3s;" onclick="openLightbox('ATM.png', 'ATM 1: Sin Cobertura')" onmouseover="this.style.transform='scale(1.02)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
-              <img src="ATM.png" alt="ATM 1: Sin Cobertura" style="width:100%;height:auto;display:block;border-radius:8px;">
-            </div>
-            <p style="margin-top:12px;font-size:14px;color:#2c5282;font-weight:600;text-transform:uppercase;letter-spacing:1px;">ATM 1: SIN COBERTURA</p>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-            <div style="width:100%;max-width:420px;background:#fff;padding:8px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e2e8f0;cursor:pointer;transition:all 0.3s;" onclick="openLightbox('Cubierta.jpg', 'ATM 2: Con Cobertura')" onmouseover="this.style.transform='scale(1.02)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
-              <img src="Cubierta.jpg" alt="ATM 2: Con Cobertura" style="width:100%;height:auto;display:block;border-radius:8px;">
-            </div>
-            <p style="margin-top:12px;font-size:14px;color:#2c5282;font-weight:600;text-transform:uppercase;letter-spacing:1px;">ATM 2: CON COBERTURA</p>
-          </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:100%;max-width:420px;background:#fff;padding:8px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e2e8f0;cursor:pointer;transition:all 0.3s;" 
+             onclick="openLightbox('ATM.png', 'ATM 2: Sin Cobertura')">
+          <img src="ATM.png" alt="ATM 2: Sin Cobertura" style="width:100%;height:auto;display:block;border-radius:8px;">
         </div>
-
-        <div class="two-tables" style="gap:30px;margin-top:20px;">
-          <div>
-            <p style="font-weight:600;color:#2c5282;margin-bottom:10px;border-bottom:2px solid #2c5282;padding-bottom:6px;font-size:15px;">ATM 1: Sin Cobertura</p>
-            <p style="font-weight:600;color:#1a202c;margin:14px 0 10px;font-size:14px;">ESTRATEGIA SIMPLE</p>
-            <table class="table">
-              <tr><th>PARÁMETRO</th><th>VALOR</th></tr>
-              <tr><td>Stop Loss</td><td class="value-red">100 ticks</td></tr>
-              <tr><td>Objetivo de Ganancias</td><td class="value-green">180 ticks</td></tr>
-              <tr><td>Cierre</td><td><strong>Todo a la vez</strong></td></tr>
-            </table>
-            <p style="font-size:14px;margin-top:10px;color:#4a5568;line-height:1.6;">Estrategia directa: se abre con Stop Loss de 100 ticks y se cierra completamente al alcanzar 180 ticks de ganancia.</p>
-          </div>
-          <div>
-            <p style="font-weight:600;color:#2c5282;margin-bottom:10px;border-bottom:2px solid #2c5282;padding-bottom:6px;font-size:15px;">ATM 2: Con Cobertura</p>
-            <p style="font-weight:600;color:#1a202c;margin:14px 0 10px;font-size:14px;">ESTRATEGIA EN DOS PASOS</p>
-            <table class="table">
-              <tr><th>PASO</th><th>SL / ACTIVADOR</th><th>FREQ</th></tr>
-              <tr><td><strong>Paso 1</strong> </td><td><span class="value-red">100</span> / <span class="value-green">108</span></td><td>10</td></tr>
-              <tr><td><strong>Paso 2</strong></td><td><span class="value-red">40</span> / <span class="value-green">160</span></td><td>2</td></tr>
-            </table>
-            <p style="font-size:14px;margin-top:10px;color:#4a5568;line-height:1.6;">Paso 1: Cubierta a 8 ticks cuando llega a 108 ticks, cubrimos la operación para evitar pérdida, la seguimos al precio a una distancia de 102 ticks cada 10 ticks que avanza.<br>Paso 2: Cuando llega a 160 ticks, el segundo paso hace que nuestra ganancia esté entre 120 y 180 ticks (objetivo), aumentando cada 2 ticks para asegurar máxima rentabilidad.</p>
-          </div>
-        </div>
-
-        <div class="gray-box" style="margin-top:28px;">
-          <p style="font-weight:600;color:#2c5282;margin-bottom:10px;font-size:14px;">Comparación y Uso</p>
-          <p style="margin-bottom:6px;"><strong>ATM 1:</strong> Uso simple, menor complejidad, cierre único. Ideal para operaciones directas.</p>
-          <p><strong>ATM 2:</strong> Estrategia de cobertura avanzada con mayor protección y rentabilidad potencial.</p>
-        </div>
+        <p style="margin-top:12px;font-size:14px;color:#2c5282;font-weight:600;text-transform:uppercase;letter-spacing:1px;">
+          ATM 2: SIN COBERTURA
+        </p>
       </div>
     </div>
+
+    <!-- TABLAS CON PARÁMETROS COMPLETOS -->
+    <div class="two-tables" style="gap:30px;margin-top:20px;">
+
+      <!-- ATM 1: CON COBERTURA (dos pasos) -->
+      <div>
+        <p style="font-weight:600;color:#2c5282;margin-bottom:10px;border-bottom:2px solid #2c5282;padding-bottom:6px;font-size:15px;">ATM 1: Con Cobertura</p>
+        <p style="font-weight:600;color:#1a202c;margin:14px 0 10px;font-size:14px;">ESTRATEGIA AVANZADA ATM Y COBERTURA EN DOS PASOS</p>
+            <table class="table">
+          <tr><th>PARÁMETRO</th><th>VALOR</th></tr>
+          <tr><td>Stop Loss</td><td class="value-red">100 ticks</td></tr>
+          <tr><td>Objetivo de Ganancias</td><td class="value-green">180 ticks</td></tr>
+        
+        </table>
+        <table class="table">
+          <tr><th>PASO</th><th>SL / ACTIVADOR</th><th>FREQ</th></tr>
+          <tr><td><strong>Paso 1</strong></td><td><span class="value-red">100</span> / <span class="value-green">108</span></td><td>10</td></tr>
+          <tr><td><strong>Paso 2</strong></td><td><span class="value-red">40</span> / <span class="value-green">160</span></td><td>2</td></tr>
+        </table>
+        <p style="font-size:14px;margin-top:10px;color:#4a5568;line-height:1.6;">
+          SL  de 100 ticks y objetivo 180 ticks
+          Paso 1 → A los 108 ticks cubrimos (SL a +8) y seguimos cada 10 ticks.<br>
+          Paso 2 → A los 160 ticks aseguramos ganancia entre 120–180 ticks (mueve cada 2 ticks).
+        </p>
+      </div>
+
+      <!-- ATM 2: SIN COBERTURA (simple) -->
+      <div>
+        <p style="font-weight:600;color:#2c5282;margin-bottom:10px;border-bottom:2px solid #2c5282;padding-bottom:6px;font-size:15px;">ATM 2: Sin Cobertura</p>
+        <p style="font-weight:600;color:#1a202c;margin:14px 0 10px;font-size:14px;">ESTRATEGIA SIMPLE</p>
+        <table class="table">
+          <tr><th>PARÁMETRO</th><th>VALOR</th></tr>
+          <tr><td>Stop Loss</td><td class="value-red">100 ticks</td></tr>
+          <tr><td>Objetivo de Ganancias</td><td class="value-green">180 ticks</td></tr>
+          <tr><td>Cierre</td><td><strong>Todo a la vez</strong></td></tr>
+        </table>
+        <p style="font-size:14px;margin-top:10px;color:#4a5568;line-height:1.6;">
+          Entrada directa con SL fijo de 100 ticks y cierre total al alcanzar los 180 ticks de beneficio.
+        </p>
+      </div>
+    </div>
+
+    <div class="gray-box" style="margin-top:28px;">
+      <p style="font-weight:600;color:#2c5282;margin-bottom:10px;font-size:14px;">Resumen rápido</p>
+      <p><strong>ATM 1 (Con Cobertura):</strong> Más protección, mayor rentabilidad potencial, ideal para la estrategia Monarca.</p>
+      <p><strong>ATM 2 (Sin Cobertura):</strong> Simple y directo, perfecto para quien prefiere operativa clásica sin trailing ni pasos.</p>
+    </div>
+  </div>
+</div>
 
     <!-- 4. QUÉ SON LAS LÍNEAS Y CUÁLES SON DE REFERENCIA -->
     <div class="slide">
@@ -716,7 +743,10 @@
         </div>
         <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:24px;">
           <div class="step-card-large"><div class="step-header"><div class="step-number">1</div><div class="step-title">Configura el Indicador</div></div><div class="step-desc"><strong>Parámetros exactos:</strong><br>• Rango: 100<br>• SMA 12<br>• DrawArrows: 10<br>• DottedLinePipsRange: 2000</div></div>
-          <div class="step-card-large"><div class="step-header"><div class="step-number">2</div><div class="step-title">Configura tu ATM</div></div><div class="step-desc"><strong>ATM 1</strong>: SL 100 ticks | TP 180 ticks<br><strong>ATM 2 (Cubierta)</strong>:<br>Paso 1 → SL 100 / Activador 108 / Freq 10<br>Paso 2 → SL 40 / Activador 160 / Freq 2</div></div>
+          <div class="step-card-large"><div class="step-header"><div class="step-number">2</div><div class="step-title">Configura tu ATM</div></div><div class="step-desc"><strong>ATM 1</strong><br>
+            <strong>(Con cubierta)</strong>:<br> SL 100 ticks | TP 180 ticks <br><strong>Cubierta</strong>: Paso 1 → SL 100 / Activador 108 / Freq 10<br>Paso 2 → SL 40 / Activador 160 / Freq 2<strong>
+              <br>ATM 2:<br>
+              (Sin Cubierta)</strong>:<br>SL 100 ticks | TP 180 ticks</div></div>
           <div class="step-card-large"><div class="step-header"><div class="step-number">3</div><div class="step-title">Analiza la Gráfica</div></div><div class="step-desc">Marca manualmente las líneas punteadas antiguas que <strong>NO hayan sido cruzadas por la banda</strong>.<br>Solo esas son válidas como referencia para la ruptura de segundo soporte/resistncia.</div></div>
           <div class="step-card-large"><div class="step-header"><div class="step-number">4</div><div class="step-title">Comportamiento de Velas</div></div><div class="step-desc"><strong>Disparo 1 (corta distancia)</strong>: Mínimo 3ª vela toca la línea<br><strong>Disparo 2 (larga distancia)</strong>: Esperamos retroceso a banda como confirmación adicional</div></div>
           <div class="step-card-large"><div class="step-header"><div class="step-number">5</div><div class="step-title">Flecha de Cambio</div></div><div class="step-desc"><strong>OBLIGATORIA en disparo 1</strong><br>Azul → compra | Roja → venta<br>Sin flecha = sin entrada</div></div>
